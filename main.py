@@ -2,11 +2,8 @@ import pandas as pd
 import json
 import warnings
 warnings.filterwarnings('ignore')
-from matplotlib.pyplot import imread
 from scipy import spatial
 import operator
-import matplotlib
-matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 plt.style.use('fivethirtyeight')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
