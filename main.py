@@ -164,7 +164,6 @@ for index, row in movies.iterrows():
         if genre not in words_list:
             words_list.append(genre)
 
-
 def binary(words):
     binaryList = []
     for genre in words_list:
@@ -174,11 +173,9 @@ def binary(words):
             binaryList.append(0)
     return binaryList
 
-
 movies['words_bin'] = movies['keywords'].apply(lambda x: binary(x))
 movies = movies[(movies['vote_average']!=0)] 
 movies = movies[movies['director']!='']
-
 
 def Similarity(movieId1, movieId2):
     a = movies.iloc[movieId1]
