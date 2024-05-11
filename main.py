@@ -9,6 +9,7 @@ plt.style.use('fivethirtyeight')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import seaborn as sns
 from customtkinter import *
+import tkinter as tk
 from tkinter import ttk
 
 movies = pd.read_csv('Datasets/tmdb_5000_movies.csv')
@@ -176,7 +177,7 @@ def binary(words):
 
 
 movies['words_bin'] = movies['keywords'].apply(lambda x: binary(x))
-movies = movies[(movies['vote_average']!=0)] #removing the movies with 0 score and without drector names 
+movies = movies[(movies['vote_average']!=0)] 
 movies = movies[movies['director']!='']
 
 
@@ -207,6 +208,7 @@ movies['new_id'] = new_id
 movies = movies[['original_title', 'genres', 'vote_average', 'genres_bin', 'cast_bin' , 'new_id' , 'director' , 'director_bin' , 'words_bin']]
 
 def predict_score(name):
+    loading_screen = show_loading_screen(app)
     root = CTk()
     root.geometry("800x600")
 
@@ -286,6 +288,8 @@ def predict_score(name):
     avg_rating_btn = CTkButton(master=frame, text="Average Rating: {:.2f}".format(avgRating / K), command=plot_predictions)
     avg_rating_btn.pack(pady=30, padx=30)
 
+    hide_loading_screen(loading_screen)
+
     root.mainloop()
 
 def get_value():
@@ -339,15 +343,41 @@ def get_graph():
     graph_window.protocol("WM_DELETE_WINDOW", close_graph_window)
     graph_window.mainloop()
 
-label = CTkLabel(master=tabview.tab("Input"), text="Enter a movie Name :", font=("Arial", 20))
+class LoadingScreen(tk.Toplevel):
+    def __init__(self, master):
+        super().__init__(master)
+        self.title("Loading...")
+        self.geometry("300x100")
+        self.progress = ttk.Progressbar(self, orient="horizontal", length=200, mode="indeterminate")
+        self.progress.pack(pady=20)
+        self.center()
+
+    def center(self):
+        self.update_idletasks()
+        width = self.winfo_width()
+        height = self.winfo_height()
+        x = (self.master.winfo_width() // 2) - (width // 2)
+        y = (self.master.winfo_height() // 2) - (height // 2)
+        self.geometry(f"+{x}+{y}")
+
+def show_loading_screen(master):
+    loading_screen = LoadingScreen(master)
+    loading_screen.grab_set() 
+    return loading_screen
+
+def hide_loading_screen(loading_screen):
+    loading_screen.grab_release()
+    loading_screen.destroy()
+
+label = CTkLabel(master=tabview.tab("Input"), text="Enter a movie Name", font=("Arial", 24))
 entry = CTkEntry(master=tabview.tab("Input"), placeholder_text="Type name",height=35,width=250)
 button = CTkButton(master=tabview.tab("Input"), text="Submit", command=get_value, corner_radius=8,width=100)
 
-label.place(relx=0.28, rely=0.2)
+label.place(relx=0.22, rely=0.2)
 entry.place(relx=0.18, rely=0.4)
 button.place(relx=0.37, rely=0.6)
 
-get_graph_label = CTkLabel(master=tabview.tab("Graph"), text="Get Genre Graph :", font=("Arial", 20))
+get_graph_label = CTkLabel(master=tabview.tab("Graph"), text="Get Genre Graph", font=("Arial", 24))
 graph_btn = CTkButton(master=tabview.tab("Graph"), text="Get Graph", command=get_graph, corner_radius=8,width=100)
 
 get_graph_label.place(relx=0.28, rely=0.2)
