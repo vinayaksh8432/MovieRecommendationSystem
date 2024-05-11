@@ -103,7 +103,6 @@ for index, row in movies.iterrows():
         if i not in castList:
             castList.append(i)
 
-
 def binary(cast_list):
     binaryList = []
     
