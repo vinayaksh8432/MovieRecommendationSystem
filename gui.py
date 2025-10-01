@@ -411,11 +411,6 @@ class MovieRecommendationGUI:
             ))
         
         tree.pack(fill="both", expand=True, padx=20, pady=20)
-        
-        # Scrollbar for treeview
-        scrollbar = ttk.Scrollbar(tree_frame, orient="vertical", command=tree.yview)
-        tree.configure(yscrollcommand=scrollbar.set)
-        scrollbar.pack(side="right", fill="y")
     
     def handle_error(self, error_msg: str, loading_dialog):
         """Handle errors during recommendation fetching."""
