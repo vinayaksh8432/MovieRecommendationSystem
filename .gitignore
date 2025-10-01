@@ -17,3 +17,16 @@ dist/
 .vscode/
 .idea/
 *.swp
+
+# Data files and caches (generated files that shouldn't be in version control)
+*.pkl
+*.pickle
+processed_movies.pkl
+similarity_cache.pkl
+
+# Temporary files
+*.tmp
+*.temp
+
+# Log files
+*.log
